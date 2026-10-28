@@ -7,28 +7,51 @@ description: Use when someone is creating a new open source project and needs th
 
 Create the files a new open source project needs so that other people can understand, use, and contribute to it.
 
-## Before writing anything, ask
+## Step 1: Ask before writing anything
+
+Ask these questions and wait for the answers. Do not guess.
 
 1. What does the project do, in one sentence?
 2. Who is it for?
-3. Which license? If they are unsure, suggest MIT for permissive use or AGPL-3.0 if they want improvements to a hosted version to stay open.
-4. How do people run it? (install command, first command to try)
+3. Which license? If the user is unsure, suggest MIT for permissive use, or AGPL-3.0 if they want changes to a hosted version to stay open. Explain each in one plain sentence.
+4. How do people install and try it? (install command, first command to run)
 
-Do not invent answers. If something is missing, ask.
+If an answer is missing or unclear, ask again. Never write a description or feature list that the user has not confirmed.
 
-## Files to create
+## Step 2: Check for secrets and personal information
 
-- **README.md:** Title, one-sentence description, who it is for, install steps, a minimal example, and a "Contributing" link.
+Before creating or publishing anything, scan the project for:
+- Signing keys and keystores (`*.keystore`, `*.jks`, `*.p12`, `*.pem`)
+- Environment files (`.env`, `.env.*`)
+- API keys and tokens (strings that look like `AIza...`, `sk-...`, or `password = "..."`)
+- Personal information (email addresses, phone numbers, home addresses)
+
+If anything is found:
+- Do not copy it into any new file.
+- Tell the user the file name and line, in plain words.
+- Say clearly that the user must rotate or restrict any exposed key before making the repository public. This step is the user's, not the skill's.
+
+## Step 3: Create the files
+
+- **README.md:** Title, one-sentence description (from Step 1), who it is for, install steps, a minimal example, and a "Contributing" link.
 - **LICENSE:** The full text of the chosen license, with the current year and the author's name.
 - **CONTRIBUTING.md:** How to report a bug, how to propose a change, and what a good pull request looks like.
 - **.github/ISSUE_TEMPLATE/bug_report.md** and **feature_request.md:** Short templates asking for steps to reproduce and expected behavior.
+- **.gitignore:** Must exclude `.env*`, `*.keystore`, `*.jks`, `*.p12`, `*.pem`, and build folders.
 
-## Checks before finishing
+## Step 4: Checks before finishing
 
 - Every install command in the README has been run once, or is marked as untested.
-- No personal data (addresses, phone numbers, private keys, IDs) appears in any file.
-- A `.gitignore` exists that excludes secrets such as `.env`.
+- No secrets or personal information appear in any file.
+- The README contains only facts the user confirmed in Step 1.
 
-## Tell the user
+## Step 5: Tell the user
 
-List the files created and the one thing they must check themselves, usually the license choice and the author name.
+- List the files created.
+- List anything from Step 2 that the user must handle themselves.
+- Ask the user to review the README before publishing.
+
+## Rules
+
+- Never push to a repository without the user's approval.
+- Never make a private repository public.
