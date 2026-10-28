@@ -15,7 +15,10 @@ Ask these questions and wait for the answers. Do not guess.
 2. Who is it for?
 3. Is this project only for personal use, or will other people use or copy it?
    - Personal use only: no license is needed. Say so in the README ("Private. All rights reserved.") and skip the LICENSE file.
-   - Other people will use it: ask which license they want. If they are unsure, suggest MIT for permissive use, or AGPL-3.0 if they want changes to a hosted version to stay open. Explain each in one plain sentence.
+   - Other people will use it: present these three options equally, in plain language, without recommending one. Wait for the user to choose.
+     1. MIT: anyone can use, change, and sell it. The only condition is keeping the license text.
+     2. Apache 2.0: similar to MIT, plus protection for patent rights. Longer text.
+     3. AGPL-3.0: anyone who changes it and runs it as a website must also publish their changes. Prevents closed copies.
 4. How do people install and try it? (install command, first command to run, or how to install the app on a phone)
 
 If an answer is missing or unclear, ask again. Never write a description or feature list that the user has not confirmed.
