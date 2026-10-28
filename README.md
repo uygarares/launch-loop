@@ -8,7 +8,9 @@ A set of Claude and Codex skills that helps open source projects go from first i
 - **launch-loop-setup:** Creates the basic files for a new project: README, LICENSE, CONTRIBUTING, and issue templates.
 - **launch-loop-maintainer:** Helps with daily maintenance: issue triage, reply drafts, release notes, and finding work for contributors.
 
-Coming later: code review with multiple agents, and a security scan of your own code.
+- **launch-loop-code-review:** Reviews your code with several independent reviewers and a judge who checks every finding against the real code. Starts with a full review, then cheaper update reviews of changed files. It shows a time and cost estimate first and never changes your code.
+
+Coming later: a security scan of your own code.
 
 ## How to use
 
