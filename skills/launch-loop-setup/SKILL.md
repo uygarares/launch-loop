@@ -44,11 +44,18 @@ If anything is found:
 - **.github/ISSUE_TEMPLATE/bug_report.md** and **feature_request.md:** Short templates asking for steps to reproduce and expected behavior.
 - **.gitignore:** Must exclude `.env*`, `*.keystore`, `*.jks`, `*.p12`, `*.pem`, and build folders.
 
+## Step 3b: Handle open decisions
+
+If the user has not decided something (install method, license, a feature), do not guess.
+- Mark the item in the README with square brackets and a short note, for example: `[Not decided yet: ...]`.
+- Do not create the file that depends on the decision (for example LICENSE).
+- At the end, list all open decisions in plain words, one per line, so the user knows what to choose next.
+
 ## Step 4: Checks before finishing
 
 - Every install command in the README has been run once, or is marked as untested.
 - No secrets or personal information appear in any file.
-- The README contains only facts the user confirmed in Step 1.
+- The README contains only facts the user confirmed in Step 1, and open decisions are marked, not guessed.
 
 ## Step 5: Tell the user
 
