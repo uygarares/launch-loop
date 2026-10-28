@@ -20,4 +20,4 @@ Early version. Feedback and issues are welcome.
 
 ## License
 
-To be decided by the author before the first release.
+MIT. See the [LICENSE](LICENSE) file.
