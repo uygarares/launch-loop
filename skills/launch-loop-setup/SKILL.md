@@ -13,8 +13,10 @@ Ask these questions and wait for the answers. Do not guess.
 
 1. What does the project do, in one sentence?
 2. Who is it for?
-3. Which license? If the user is unsure, suggest MIT for permissive use, or AGPL-3.0 if they want changes to a hosted version to stay open. Explain each in one plain sentence.
-4. How do people install and try it? (install command, first command to run)
+3. Is this project only for personal use, or will other people use or copy it?
+   - Personal use only: no license is needed. Say so in the README ("Private. All rights reserved.") and skip the LICENSE file.
+   - Other people will use it: ask which license they want. If they are unsure, suggest MIT for permissive use, or AGPL-3.0 if they want changes to a hosted version to stay open. Explain each in one plain sentence.
+4. How do people install and try it? (install command, first command to run, or how to install the app on a phone)
 
 If an answer is missing or unclear, ask again. Never write a description or feature list that the user has not confirmed.
 
@@ -34,7 +36,7 @@ If anything is found:
 ## Step 3: Create the files
 
 - **README.md:** Title, one-sentence description (from Step 1), who it is for, install steps, a minimal example, and a "Contributing" link.
-- **LICENSE:** The full text of the chosen license, with the current year and the author's name.
+- **LICENSE:** Only if the project is public. The full text of the chosen license, with the current year and the author's name.
 - **CONTRIBUTING.md:** How to report a bug, how to propose a change, and what a good pull request looks like.
 - **.github/ISSUE_TEMPLATE/bug_report.md** and **feature_request.md:** Short templates asking for steps to reproduce and expected behavior.
 - **.gitignore:** Must exclude `.env*`, `*.keystore`, `*.jks`, `*.p12`, `*.pem`, and build folders.
