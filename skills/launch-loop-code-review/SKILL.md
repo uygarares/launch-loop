@@ -13,6 +13,7 @@ Review code with several independent reviewers, each looking from a different an
 - Every finding must name a file and a line, and quote the code it is about. Drop any finding that has no evidence.
 - State clearly in the final report: "This is not a full security audit."
 - Show the plan, the estimated time, and the estimated cost first. Start only after the user says yes.
+- Never write a secret in full anywhere (report, map, or chat). A secret is an API key, password, token, or private key. Show only the first 4 characters followed by "…" (for example `AIza…`), plus the file and line. Never copy secrets into new files.
 - Keep the language simple. The maintainer may not be technical.
 
 ## Step 1: Choose the mode
