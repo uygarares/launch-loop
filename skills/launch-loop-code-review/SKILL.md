@@ -114,7 +114,7 @@ After a full review, propose a `PROJECT_MAP.md`. Show it to the user and save it
 
 Keep the map short: one line per item, no code. It must be understandable to a non-technical maintainer.
 
-During an update review, read the map first. Review only the files changed since "Last full review" and the files listed under "Important files". If the changes mean the map should change, show the exact change and wait for approval. Do not edit the map on your own.
+During an update review, read the map first. Review only the files changed since "Last full review" and the files listed under "Important files". To find the changed files, use git (for example `git diff --name-only` from the commit nearest the review date). If the project has no git history, compare file modification dates with the review date instead, and tell the user this is less exact. If the changes mean the map should change, show the exact change and wait for approval. Do not edit the map on your own.
 
 ## Deep review (only when the user asks)
 
