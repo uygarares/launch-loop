@@ -7,34 +7,43 @@ description: Use when a maintainer of an open source project needs help with inc
 
 Help a maintainer handle the daily work of an open source project. Each task below is separate. Do only the one the user asks for.
 
+## Golden rules
+
+- Never post a comment, close an issue, merge a pull request, or apply labels without the user's approval.
+- Always show the plan first, then wait for a clear yes.
+- Use plain language. The maintainer may not be technical.
+
 ## 1. Triage new issues
 
-For each open issue without a label:
-- Suggest one label: `bug`, `feature`, `question`, `docs`, or `needs-info`.
-- If the issue lacks steps to reproduce, mark it `needs-info`.
-- If it is a duplicate, name the original issue number. Do not close it yourself.
+For each open issue without a label, suggest one label:
+- `bug`: something is broken
+- `feature`: a new idea or request
+- `question`: someone needs help
+- `docs`: a documentation problem
+- `needs-info`: steps to reproduce or key details are missing
 
-Show the list first. Apply labels only after the user approves.
+If an issue looks like a duplicate of another, name the original issue number and link them with a comment after approval. Never close a duplicate automatically.
 
-## 2. Draft a reply
+Show the full list in a table first. Apply labels only after the user approves.
 
-Write a short reply that:
-- Thanks the person for the report.
+## 2. Draft replies
+
+Write a short reply draft that:
+- Thanks the person.
 - Says what happens next, in one sentence.
-- Asks for only the missing information, if any.
+- Asks only for the missing information, if any.
 
-Keep it under 120 words. Plain language.
+Keep each draft under 120 words. Show all drafts to the user. Post a draft only after the user approves that specific draft.
 
 ## 3. Release notes
 
-Read the commits since the last tag. Group them into: **Added**, **Changed**, **Fixed**. Skip merge commits and typo-only commits. Write each line in plain language.
+Read the commits since the last tag. Group them into **Added**, **Changed**, and **Fixed**. Skip merge commits and typo-only commits. Write each line in plain language. Show the result to the user before saving or publishing.
 
 ## 4. Find contributor-friendly work
 
-List open issues that are labeled `help wanted` or `good first issue`, or that have a clear scope and no assignee. For each, give the issue number, a one-sentence summary, and the skill level needed.
+List open issues labeled `help wanted` or `good first issue`, or issues with a clear scope and no assignee. For each, give the issue number, a one-sentence summary, and the skill level needed.
 
-## Rules
+## Before finishing
 
-- Never close, merge, or comment on the user's behalf without approval.
-- Never share the contents of private issues outside the repository.
-- End every output with what the user should check.
+- Tell the user what was done and what still needs their decision.
+- Tell the user which items were only drafts and were not sent.
