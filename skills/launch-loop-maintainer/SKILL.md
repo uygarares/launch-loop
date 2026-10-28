@@ -37,6 +37,8 @@ Keep each draft under 120 words. Show all drafts to the user. Post a draft only 
 
 ## 3. Release notes
 
+First check that the repository has commits and at least one release or tag. If it has no commits, say: "There is nothing to write release notes for yet." If it has commits but no tag, use the commits since the first commit and say so.
+
 Read the commits since the last tag. Group them into **Added**, **Changed**, and **Fixed**. Skip merge commits and typo-only commits. Write each line in plain language. Show the result to the user before saving or publishing.
 
 ## 4. Find contributor-friendly work
