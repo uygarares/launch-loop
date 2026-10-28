@@ -22,6 +22,7 @@ Ask a follow-up only if the answer is unclear.
 
 - **No repository yet, or an empty repository:** use `launch-loop-setup`.
 - **A repository with code, and issues or pull requests coming in:** use `launch-loop-maintainer`.
+- **The user wants their code checked** (for bugs, mistakes, or risky parts), or has just written a lot of code and wants a second look: use `launch-loop-code-review`. This works for public and private repositories alike. If the repository has code but the user did not say what they need, offer both: "Do you want help with incoming issues, or a review of your code?"
 - **Not sure what the project needs:** ask what they built and who it is for, then choose.
 
 ## Rules
