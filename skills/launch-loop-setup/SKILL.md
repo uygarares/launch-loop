@@ -67,3 +67,7 @@ If the user has not decided something (install method, license, a feature), do n
 
 - Never push to a repository without the user's approval.
 - Never make a private repository public.
+
+## Language
+
+Always reply in the same language the user writes in. If the user writes in Turkish, reply in Turkish, even though these instructions are in English.

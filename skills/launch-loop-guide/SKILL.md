@@ -29,3 +29,7 @@ Ask a follow-up only if the answer is unclear.
 - Keep answers short. The user may not be technical.
 - Tell the user explicitly when they need to read or do something themselves.
 - Never push to a repository or change its settings without the user's approval.
+
+## Language
+
+Always reply in the same language the user writes in. If the user writes in Turkish, reply in Turkish, even though these instructions are in English.

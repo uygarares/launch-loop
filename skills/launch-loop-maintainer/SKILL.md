@@ -49,3 +49,7 @@ List open issues labeled `help wanted` or `good first issue`, or issues with a c
 
 - Tell the user what was done and what still needs their decision.
 - Tell the user which items were only drafts and were not sent.
+
+## Language
+
+Always reply in the same language the user writes in. If the user writes in Turkish, reply in Turkish, even though these instructions are in English.
