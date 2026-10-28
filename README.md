@@ -12,7 +12,7 @@ Coming later: code review with multiple agents, and a security scan of your own 
 
 ## How to use
 
-Copy the `skills/` folder into your Claude or Codex skills directory, then ask for help in plain language, for example: "I want to start an open source project, where do I begin?"
+Copy the folders inside `skills/` into `.agents/skills/` in your project (for Codex and most tools), or into `~/.agents/skills/` for personal use. Then ask for help in plain language, for example: "I want to start an open source project, where do I begin?"
 
 ## Status
 
