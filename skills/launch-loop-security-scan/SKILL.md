@@ -38,7 +38,7 @@ Wait for approval.
 
 Give each reviewer one angle. They work independently and do not see each other's results. If the tool cannot run helpers in parallel, run the angles one after another.
 
-1. **Secrets in code and in history.** API keys, passwords, tokens, private keys, signing keys, `.env` files. Search the current files and the git history (for example `git log -p -S "<pattern>"` or a search over `git log --all`). A secret deleted from the code but still in history counts: it must be treated as exposed, rotated, and cleaned.
+1. **Secrets in code and in history.** API keys, passwords, tokens, private keys, signing keys, `.env` files. Search the current files and the git history (for example `git log -p -S "<pattern>"` or a search over `git log --all`). A secret deleted from the code but still in history counts: it must be treated as exposed, rotated, and cleaned. First check whether the history is complete (`git rev-parse --is-shallow-repository`, and `git log --oneline | wc -l`). If the repository is shallow or has no history, say so: write "git history not checked" in the report and do not claim the history is clean.
 2. **Injection.** User input going unchecked into database queries, system commands, web pages, file paths, or templates.
 3. **Login, sessions, and permissions.** Missing checks of who the user is or what they may do; weak or missing password handling; components or endpoints open to everyone that should not be.
 4. **Insecure settings.** Debug mode left on, unencrypted connections, very wide permissions, backups or logging that leave data exposed, signing keys committed.
@@ -46,7 +46,8 @@ Give each reviewer one angle. They work independently and do not see each other'
 6. **Cryptography.** Weak or home-made encryption, fixed or reused keys and IVs, weak hashing of passwords, random numbers that are not secure.
 7. **Automation files.** CI/CD workflows (such as GitHub Actions): secrets exposed to untrusted pull requests, too many permissions, steps that skip checks.
 8. **Dependencies.** Packages with known problems. See "Tools".
-9. **AI and agent projects only.** Text from outside (web pages, files, messages) that could give hidden commands to an assistant; tools that act without asking; secrets reachable by the model.
+9. **Embedded web pages and bridges (apps with a WebView, Electron, or similar).** What the page can call: list the methods the app exposes to the page (for example `addJavascriptInterface`) and note which ones touch money, files, contacts, messages, or calls. Then check what can run in that page: scripts loaded from the internet without an integrity check, links or frames that let the page navigate to other sites, text from outside put into the page without escaping, and web settings that are too open. A script from outside that runs next to a powerful bridge is a real risk.
+10. **AI and agent projects only.** Text from outside (web pages, files, messages) that could give hidden commands to an assistant; tools that act without asking; secrets reachable by the model.
 
 Each reviewer writes findings with file, line, quoted code, and one sentence on why it matters.
 
