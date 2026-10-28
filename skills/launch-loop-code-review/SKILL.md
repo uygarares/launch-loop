@@ -23,14 +23,34 @@ Look for a `PROJECT_MAP.md` file in the project.
 - **A map exists:** Offer an **update review** of the files changed since the last review.
 - **The map is old:** If the last full review was more than the interval the user chose (weekly or monthly, ask once and remember it in the map), ask: "Shall I run a full review now?" Never start a full review without a yes.
 
+## Step 1b: Public or private?
+
+Ask once, in plain words: "Is this repository public (anyone can read it) or private (only you)?" If a `PROJECT_MAP.md` exists, read the answer from "Repository visibility" instead of asking again. If the user is not sure, check with the repository settings or ask them to look, and treat it as public until known. Save the answer in the map (after approval).
+
+This answer changes how serious some findings are. See "Severity" in Step 4.
+
 ## Step 2: Plan and ask
 
 Tell the user in plain words:
 - Which files will be read.
 - How many reviewers will run (default 4 to 6).
-- A rough estimate of time and cost.
+- A rough estimate of time and cost (see "How to estimate" below).
 
 Wait for approval.
+
+### How to estimate
+
+Do not guess. Count first:
+1. Count the lines of the files in scope (for example with `wc -l`). In an update review, count only the changed files and the files listed under "Important files" in the map.
+2. Size of one read: lines x 12 = roughly that many tokens.
+3. Total work: (size of one read x number of reviewers) + the same size once more for the judge.
+4. Give the user a size, not a price:
+   - **Small:** under 100,000 tokens in total.
+   - **Medium:** 100,000 to 500,000.
+   - **Large:** over 500,000.
+5. Time: about 2 to 5 minutes for a small review, 10 to 30 minutes for a medium one, longer for a large one. If the reviewers run one after another, use the upper end.
+6. Say plainly that this is a rough estimate. The real cost depends on the model and the user's plan. Never state a money amount as a fact.
+7. If the review is Large, offer to narrow it first: review only the files that handle login, money, encryption, or deleting data, then widen later.
 
 ## Step 3: Reviewers
 
@@ -54,6 +74,12 @@ The judge:
 3. Removes findings that cannot be verified.
 4. Sorts the rest: **High**, **Medium**, **Low**.
 
+### Severity
+
+- An exposed secret (API key, password, signing key committed to the repository) is **High** if the repository is public or may become public. If the repository is private, mark it **Medium** and add: "High if this repository is ever made public." Either way, tell the user to rotate or restrict the secret before any publication.
+- A problem that could lose or leak the user's data, money, or login is **High** or **Medium**, whether the repository is public or private.
+- Style, size, and missing-test findings are never above **Medium**.
+
 ## Step 5: Report
 
 Write a short report:
@@ -63,9 +89,31 @@ Write a short report:
 
 ## Project map (full review only)
 
-After a full review, propose a `PROJECT_MAP.md`: main parts, important files, known risks, and the date of this review. Show it to the user and save it only after approval.
+After a full review, propose a `PROJECT_MAP.md`. Show it to the user and save it only after approval. Use exactly this format, so later reviews can read it:
 
-During an update review, if the changes mean the map should change, show the exact change and wait for approval. Do not edit the map on your own.
+```markdown
+# Project Map
+
+- Last full review: YYYY-MM-DD
+- Review interval: weekly | monthly | never (chosen by the user)
+- Repository visibility: public | private
+
+## Main parts
+- `path/to/folder-or-file`: one sentence on what it does.
+
+## Important files
+- `path/to/file`: why it matters (for example: handles login, stores money, encrypts data).
+
+## Known risks
+- `path/to/file:line`: one sentence. Never write secret values here.
+
+## Not covered
+- What the last review did not check.
+```
+
+Keep the map short: one line per item, no code. It must be understandable to a non-technical maintainer.
+
+During an update review, read the map first. Review only the files changed since "Last full review" and the files listed under "Important files". If the changes mean the map should change, show the exact change and wait for approval. Do not edit the map on your own.
 
 ## Deep review (only when the user asks)
 
