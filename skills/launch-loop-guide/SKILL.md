@@ -9,7 +9,14 @@ Your job is to find out where the user is in their project's life and point them
 
 ## Ask one question first
 
-"Do you already have a repository on GitHub with code in it, or are you starting from nothing?"
+"Do you have a repository on GitHub yet?"
+
+Accept three kinds of answer:
+1. No repository: route to `launch-loop-setup`.
+2. A repository that is empty: route to `launch-loop-setup`.
+3. A repository with code and activity (issues, pull requests): route to `launch-loop-maintainer`.
+
+Ask a follow-up only if the answer is unclear.
 
 ## Route
 
