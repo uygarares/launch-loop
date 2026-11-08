@@ -151,15 +151,11 @@ A pull request is a change someone else proposes. The author may be a stranger. 
 
 ## Deep review (only when the user asks)
 
-Up to 16 reviewers, each with a different strategy card (for example: think from first principles, think backwards from failure, look at edge cases first). Then:
-1. Reviewers are paired. One defends its findings, the other attacks them using evidence from the code.
-2. The judge scores each pair. The weaker side is out.
-3. Pairs repeat until one set of findings remains (16, 8, 4, 2, 1).
-4. The judge verifies the final findings as in Step 4.
+A deep review is a tournament: 8 or 16 reviewers with different strategy cards search the code, every finding is tested in a duel between a prosecutor and a defender, and the strongest strategies go on to look deeper. Findings are never thrown away because the reviewer who found them was knocked out.
 
-Warn the user before starting: a deep review makes many more calls and costs much more than the default. Run it only after a clear yes, and only on risky changes (login, payments, deleting data).
+It costs about 5 to 10 times more than a normal review. Offer it only when the user asks, and suggest it only for risky code (login, money, encryption, deleting data).
 
-> Draft: the duel and scoring rules need refinement before this mode is released.
+When the user asks for it, read `duel.md` in this skill's folder and follow it exactly.
 
 ## Safety and care
 

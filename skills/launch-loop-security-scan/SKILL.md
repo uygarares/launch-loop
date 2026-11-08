@@ -83,9 +83,11 @@ For bugs, readability, and missing tests, suggest `launch-loop-code-review`.
 
 ## Attacker and defender duel (only when the user asks)
 
-> Draft: the duel rules need refinement before this mode is released.
+A duel is a tournament: 8 or 16 reviewers with different attacker strategy cards search the code. Every finding is tested in a duel: an attacker must show a complete chain (entry, path, harm) with quotes from the code, and a defender must quote real protections. The attacker only describes; it never writes attack code or runs anything. The strongest strategies go on to look deeper, and no confirmed finding is thrown away.
 
-For risky code (login, payments, encryption, deleting data), the user may ask for a duel. One reviewer plays the attacker and argues how a finding could be misused, using only evidence from the code. Another plays the defender and argues why the code is safe, also using only evidence. The judge scores each pair and keeps the findings the attacker proved. Warn the user first: a duel makes many more calls and costs much more than the default scan. Run it only after a clear yes. The attacker never touches a running system.
+It costs about 5 to 10 times more than a normal scan. Offer it only when the user asks, for risky code.
+
+When the user asks for it, read `duel.md` in this skill's folder and follow it exactly.
 
 ## Safety and care
 

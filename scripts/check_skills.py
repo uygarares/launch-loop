@@ -81,6 +81,10 @@ def main():
         if "## Safety and care" not in body and "## Golden rules" not in body and "## Rules" not in body:
             fail(label, "missing a rules section ('## Golden rules', '## Rules' or '## Safety and care')")
 
+        for ref in sorted(set(re.findall(r"`([A-Za-z0-9_\-]+\.md)` in this skill's folder", text))):
+            if not (folder / ref).exists():
+                fail(label, f"refers to {ref} in its folder, but the file is missing")
+
         line_count = len(text.splitlines())
         if line_count > MAX_LINES:
             fail(label, f"{line_count} lines (keep skills under {MAX_LINES})")
