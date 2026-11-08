@@ -1,0 +1,28 @@
+name: Check skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Check the skill files
+        run: python3 scripts/check_skills.py
+
+      - name: Test the install script
+        run: |
+          export HOME="$(mktemp -d)"
+          ./install.sh --dry-run
+          test ! -e "$HOME/.agents" || { echo "dry run must not copy anything"; exit 1; }
+          ./install.sh
+          test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls skills | wc -l)"
+          ./install.sh | grep -q "0 installed"
