@@ -47,7 +47,7 @@ By default this installs to `~/.agents/skills` (Codex and most tools). Options:
 
 `-ExecutionPolicy Bypass` only lets this one script run in this one PowerShell window. It does not change any Windows setting.
 
-The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). The Windows script has not been tested on Windows yet (the macOS and Linux script has), so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
+The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). Both scripts are tested automatically on Windows, macOS and Linux with every change, but computers differ, so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
 
 Then restart your assistant and go to step 4 below.
 
