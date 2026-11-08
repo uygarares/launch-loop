@@ -16,6 +16,41 @@ Coming later: idea validation.
 
 You do not need to be technical. You only copy folders and then talk to your assistant.
 
+### Quickest way: one command
+
+You need [git](https://git-scm.com/downloads) installed. Open a terminal and run:
+
+**macOS or Linux**
+
+```bash
+git clone https://github.com/uygarares/launch-loop
+cd launch-loop
+./install.sh
+```
+
+**Windows (PowerShell)**
+
+```powershell
+git clone https://github.com/uygarares/launch-loop
+cd launch-loop
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+By default this installs to `~/.agents/skills` (Codex and most tools). Options:
+
+| Option (macOS/Linux, Windows) | What it does |
+|---|---|
+| `--claude`, `-Claude` | Install for Claude Code (`~/.claude/skills`) |
+| `--project`, `-Project` | Install into the current folder only |
+| `--force`, `-Force` | Replace skills that are already installed |
+| `--dry-run`, `-DryRun` | Show what would happen, copy nothing |
+
+The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). The Windows script has not been tested on many machines yet, so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
+
+Then restart your assistant and go to step 4 below.
+
+### Or copy by hand
+
 **1. Download.** On this page choose **Code → Download ZIP**, or take the zip from the [latest release](https://github.com/uygarares/launch-loop/releases/latest). Unzip it.
 
 **2. Copy the skills.** Inside the unzipped folder, open `skills/`. Copy the folders you want (or all five) to one of these places:
