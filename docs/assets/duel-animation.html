@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Launch Loop duel animation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0e1116; --panel: #171c24; --line: #2a323d; --text: #e6edf3; --muted: #8b97a6;
+    --teal: #3dd6c6; --amber: #ffb454; --red: #ff6b6b; --green: #5ad67d; --blue: #6aa9ff;
+  }
+  html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
+  body { font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--text); }
+  #stage { position: relative; width: 100vw; height: 100vh; }
+  #scene { position: absolute; left: 0; }
+  #header { position: absolute; left: 0; right: 0; text-align: center; letter-spacing: .18em; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+  #header b { color: var(--teal); }
+  #caption { position: absolute; left: 6%; right: 6%; text-align: center; font-weight: 700; line-height: 1.25; }
+  #footer { position: absolute; left: 0; right: 0; text-align: center; color: var(--amber); font-family: Consolas, 'Liberation Mono', monospace; font-weight: 700; display: none; }
+  text { font-family: inherit; }
+  .mono { font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="header"><b>Launch Loop</b> · deep review</div>
+  <svg id="scene" viewBox="0 0 1600 820" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="caption"></div>
+  <div id="footer">github.com/uygarares/launch-loop</div>
+</div>
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const C = { bg:"#0e1116", panel:"#171c24", line:"#2a323d", text:"#e6edf3", muted:"#8b97a6",
+  teal:"#3dd6c6", amber:"#ffb454", red:"#ff6b6b", green:"#5ad67d", blue:"#6aa9ff" };
+const DURATION = 32;
+const svg = document.getElementById("scene");
+
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  (parent || svg).appendChild(e);
+  return e;
+}
+function txt(parent, x, y, s, size, fill, anchor, weight, cls) {
+  const t = el("text", { x, y, "font-size": size, fill: fill || C.text, "text-anchor": anchor || "middle", "font-weight": weight || 600 }, parent);
+  if (cls) t.setAttribute("class", cls);
+  t.textContent = s;
+  return t;
+}
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2;
+const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+const pop = (x) => { const c = clamp(x); return c < 1 ? 1 + Math.sin(c * Math.PI) * 0.25 * (1 - c) + (easeOut(c) - 1) : 1; };
+const lerp = (a, b, k) => a + (b - a) * k;
+function sceneOp(t, a, b, f = 0.4) { return Math.min(prog(t, a, a + f), 1 - prog(t, b - f, b)); }
+function setOp(g, o) { g.setAttribute("opacity", o.toFixed(3)); g.style.display = o <= 0.001 ? "none" : ""; }
+function place(g, x, y, s = 1) { g.setAttribute("transform", `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${s.toFixed(3)})`); }
+
+/* ---------- characters ---------- */
+function person(parent, color, opts = {}) {
+  const g = el("g", {}, parent);
+  el("circle", { cx: 0, cy: 0, r: 34, fill: color }, g);
+  el("circle", { cx: -12, cy: -5, r: 8, fill: "#fff" }, g);
+  el("circle", { cx: 12, cy: -5, r: 8, fill: "#fff" }, g);
+  el("circle", { cx: -11, cy: -4, r: 4, fill: "#0e1116" }, g);
+  el("circle", { cx: 13, cy: -4, r: 4, fill: "#0e1116" }, g);
+  el("path", { d: "M -10 14 Q 0 22 10 14", stroke: "#0e1116", "stroke-width": 3, fill: "none", "stroke-linecap": "round" }, g);
+  if (opts.glasses) {
+    el("circle", { cx: -12, cy: -5, r: 12, fill: "none", stroke: "#0e1116", "stroke-width": 3 }, g);
+    el("circle", { cx: 12, cy: -5, r: 12, fill: "none", stroke: "#0e1116", "stroke-width": 3 }, g);
+    el("line", { x1: -1, y1: -5, x2: 1, y2: -5, stroke: "#0e1116", "stroke-width": 3 }, g);
+  }
+  if (opts.tie) el("path", { d: "M 0 34 L -8 44 L 0 74 L 8 44 Z", fill: opts.tie }, g);
+  return g;
+}
+
+/* ---------- shared elements ---------- */
+const sceneLayers = {};
+function layer(name) { sceneLayers[name] = el("g", {}); return sceneLayers[name]; }
+
+/* ===== Scene 1: one reviewer, a bug, a question ===== */
+const s1 = layer("s1");
+el("rect", { x: 620, y: 110, width: 700, height: 560, rx: 18, fill: C.panel, stroke: C.line, "stroke-width": 2 }, s1);
+txt(s1, 650, 150, "pay.js", 26, C.muted, "start", 600, "mono");
+const s1lines = [
+  "function pay(user, amount) {",
+  "  const total = round(amount);",
+  "  charge(user, total);",
+  "  log(user, total);",
+  "  return { ok: true };",
+  "}",
+];
+const s1bugBox = el("rect", { x: 636, y: 306, width: 668, height: 52, rx: 8, fill: "rgba(255,180,84,.18)", stroke: C.amber, "stroke-width": 3 }, s1);
+s1lines.forEach((l, i) => txt(s1, 660, 200 + i * 62 + 0, l, 30, i === 2 ? C.amber : C.text, "start", 500, "mono"));
+const s1rev = person(s1, C.teal, { glasses: true });
+const s1think = el("g", {}, s1);
+el("rect", { x: 0, y: 0, width: 300, height: 70, rx: 18, fill: C.panel, stroke: C.line, "stroke-width": 2 }, s1think);
+txt(s1think, 150, 45, "Found one!", 30, C.text, "middle", 700);
+const s1q = [0,1,2].map((i) => txt(s1, 0, 0, "?", 64, C.amber, "middle", 800));
+
+/* ===== Grid of 16 reviewers (scenes 2-3) ===== */
+const gridLayer = layer("grid");
+const strategies = ["inputs","empty data","money","login","files","errors","paths","tests","dependencies","logic","caching","config","timing","text","limits","state"];
+const palette = [C.teal, C.blue, C.amber, C.green, "#c792ea", "#ff9ec4", "#7bdff2", "#f4d35e"];
+const revs = [];
+const POOL = { x: 800, y: 745 };
+for (let i = 0; i < 16; i++) {
+  const col = i % 4, row = Math.floor(i / 4);
+  const x = 800 + (col - 1.5) * 330, y = 135 + row * 160;
+  const g = el("g", {}, gridLayer);
+  const card = el("g", {}, g);
+  el("rect", { x: -88, y: -86, width: 176, height: 34, rx: 9, fill: C.panel, stroke: palette[i % 8], "stroke-width": 2 }, card);
+  txt(card, 0, -62, strategies[i], 20, C.text, "middle", 600);
+  const body = person(g, palette[i % 8], {});
+  revs.push({ g, x, y, i, card, body });
+}
+const bubbles = [];
+for (let i = 0; i < 16; i++) bubbles.push(el("circle", { r: 11, fill: C.amber }, gridLayer));
+const poolG = el("g", {}, gridLayer);
+el("rect", { x: -300, y: -34, width: 600, height: 68, rx: 20, fill: C.panel, stroke: C.amber, "stroke-width": 2, "stroke-dasharray": "8 8" }, poolG);
+const poolText = txt(poolG, 0, 10, "Pool of findings: 0", 30, C.amber, "middle", 700);
+place(poolG, POOL.x, POOL.y);
+
+/* ===== Scene 4: the duel ===== */
+const s4 = layer("s4");
+const findCard = el("g", {}, s4);
+el("rect", { x: -300, y: -50, width: 600, height: 100, rx: 18, fill: C.panel, stroke: C.amber, "stroke-width": 3 }, findCard);
+txt(findCard, 0, -8, "Finding: no check before charge()", 28, C.text, "middle", 700);
+txt(findCard, 0, 28, "pay.js, line 3", 24, C.amber, "middle", 600, "mono");
+const pros = el("g", {}, s4); const prosP = person(pros, C.red, { tie: C.red });
+const defn = el("g", {}, s4); const defP = person(defn, C.blue, { tie: C.blue });
+const judg = el("g", {}, s4); person(judg, C.amber, { glasses: true, tie: "#fff" });
+el("rect", { x: -48, y: 48, width: 96, height: 14, rx: 7, fill: "#8d6a2f" }, judg);
+txt(s4, 0, 0, "", 1); // spacer
+const labelPros = txt(s4, 0, 0, "Prosecutor", 28, C.red, "middle", 700);
+const labelDef = txt(s4, 0, 0, "Defender", 28, C.blue, "middle", 700);
+const labelJudge = txt(s4, 0, 0, "Judge", 28, C.amber, "middle", 700);
+function bubble(parent, w, h, color, line1, line2) {
+  const g = el("g", {}, parent);
+  el("rect", { x: -w/2, y: -h/2, width: w, height: h, rx: 22, fill: C.panel, stroke: color, "stroke-width": 3 }, g);
+  txt(g, 0, line2 ? -6 : 10, line1, 30, C.text, "middle", 700);
+  if (line2) txt(g, 0, 32, line2, 30, C.text, "middle", 700);
+  return g;
+}
+const bubPros = bubble(s4, 400, 120, C.red, "Real bug.", "Here is the code.");
+const bubDef = bubble(s4, 400, 120, C.blue, "No. It is already", "checked above.");
+const codeP = el("g", {}, s4);
+el("rect", { x: -280, y: -110, width: 560, height: 220, rx: 16, fill: "#0b0f14", stroke: C.amber, "stroke-width": 3 }, codeP);
+const codeLines = ["1  function pay(user, amount) {", "2    const total = round(amount);", "3    charge(user, total);", "4    return { ok: true };"];
+codeLines.forEach((l, i) => txt(codeP, -255, -58 + i * 44, l, 25, i === 2 ? C.amber : C.text, "start", 500, "mono"));
+const codeHi = el("rect", { x: -268, y: 12 - 22, width: 536, height: 38, rx: 6, fill: "rgba(255,180,84,.22)" }, codeP);
+txt(codeP, 0, -128, "The judge opens the real file", 26, C.muted, "middle", 600);
+const stamps = [
+  { label: "Confirmed", color: C.green, mark: "✓", x: 540 },
+  { label: "Rejected", color: C.red, mark: "✕", x: 800 },
+  { label: "Unclear", color: C.muted, mark: "?", x: 1060 },
+].map((s) => {
+  const g = el("g", {}, s4);
+  el("rect", { x: -120, y: -40, width: 240, height: 80, rx: 16, fill: "none", stroke: s.color, "stroke-width": 4 }, g);
+  txt(g, -82, 16, s.mark, 46, s.color, "middle", 800);
+  txt(g, 22, 11, s.label, 28, s.color, "middle", 700);
+  return Object.assign(s, { g });
+});
+
+/* ===== Scene 5: elimination ===== */
+const s5 = layer("s5");
+const rounds = [16, 8, 4, 2, 1];
+const rowY = [190, 320, 440, 550, 660];
+const dots = [];
+const scores = [[5,-1,3,0,4,-2,2,-1,5,1,3,-1,4,0,2,-2],[8,6,9,5,7,6,8,4],[12,10,13,9],[16,14],[]];
+rounds.forEach((n, r) => {
+  const arr = [];
+  for (let k = 0; k < n; k++) {
+    const x = 800 + (k - (n - 1) / 2) * Math.min(88, 1180 / n);
+    const g = el("g", {}, s5);
+    const circ = el("circle", { cx: 0, cy: 0, r: r === 4 ? 40 : 26, fill: palette[(k * Math.pow(2, r)) % 8] }, g);
+    if (scores[r][k] !== undefined) txt(g, 0, -40, (scores[r][k] >= 0 ? "+" : "") + scores[r][k], 20, scores[r][k] < 0 ? C.red : C.muted, "middle", 700);
+    arr.push({ g, x, y: rowY[r], circ });
+  }
+  dots.push(arr);
+});
+const crown = txt(s5, 800, 598, "♛", 44, C.amber, "middle", 800);
+const champLabel = txt(s5, 800, 745, "Best strategy goes deeper", 30, C.amber, "middle", 700);
+const keepBox = el("g", {}, s5);
+el("rect", { x: -165, y: -60, width: 330, height: 120, rx: 18, fill: C.panel, stroke: C.amber, "stroke-width": 2, "stroke-dasharray": "8 8" }, keepBox);
+txt(keepBox, 0, -14, "Pool keeps every", 28, C.amber, "middle", 700);
+txt(keepBox, 0, 24, "verified finding", 28, C.amber, "middle", 700);
+place(keepBox, 1380, 420);
+const lostChips = [];
+for (let i = 0; i < 8; i++) lostChips.push(el("circle", { r: 9, fill: C.amber }, s5));
+
+/* ===== Scene 6: report ===== */
+const s6 = layer("s6");
+el("rect", { x: 200, y: 90, width: 1200, height: 560, rx: 20, fill: C.panel, stroke: C.line, "stroke-width": 2 }, s6);
+txt(s6, 240, 150, "Verified findings", 34, C.text, "start", 800);
+txt(s6, 1360, 150, "5 confirmed · 2 rejected · 1 needs a human", 22, C.muted, "end", 600);
+el("line", { x1: 240, y1: 180, x2: 1360, y2: 180, stroke: C.line, "stroke-width": 2 }, s6);
+const reportRows = [
+  { sev: "High", color: C.red, file: "pay.js:3", what: "No check before charge()" },
+  { sev: "High", color: C.red, file: "auth.js:17", what: "Token never expires" },
+  { sev: "Medium", color: C.amber, file: "export.js:52", what: "Empty file crashes the export" },
+  { sev: "Low", color: C.blue, file: "utils.js:88", what: "Unclear variable name" },
+].map((r, i) => {
+  const g = el("g", {}, s6);
+  const y = 250 + i * 95;
+  el("rect", { x: 240, y: y - 38, width: 130, height: 54, rx: 14, fill: r.color }, g);
+  txt(g, 305, y + 1, r.sev, 26, "#0e1116", "middle", 800);
+  txt(g, 400, y + 1, r.file, 28, C.amber, "start", 600, "mono");
+  txt(g, 640, y + 1, r.what, 30, C.text, "start", 600);
+  txt(g, 1330, y + 4, "✓", 40, C.green, "end", 800);
+  return g;
+});
+txt(s6, 800, 735, "Each finding names a file and a line, and was checked by a judge.", 26, C.muted, "middle", 500);
+
+/* ===== Scene 7: end card ===== */
+const s7 = layer("s7");
+txt(s7, 800, 300, "Launch Loop", 130, C.text, "middle", 800);
+txt(s7, 800, 400, "Skills for open source maintainers", 44, C.teal, "middle", 700);
+txt(s7, 800, 500, "Works with Claude, Codex and other tools that read skills", 30, C.muted, "middle", 500);
+txt(s7, 800, 610, "github.com/uygarares/launch-loop", 40, C.amber, "middle", 700, "mono");
+txt(s7, 800, 680, "Free · MIT license", 28, C.muted, "middle", 600);
+
+/* ---------- captions ---------- */
+const CAPTIONS = [
+  [0.3, 4, "One AI reviewer says it found a bug.\nIs it real?"],
+  [4.3, 8, "16 reviewers.\n16 different strategies."],
+  [8.2, 11, "Every finding goes into one pool."],
+  [11.2, 16, "A prosecutor and a defender\nargue every finding."],
+  [16, 18, "A judge checks the real code."],
+  [18.3, 23, "Best strategies go deeper.\nNo verified finding is lost."],
+  [23.3, 28, "Only verified findings reach you."],
+];
+
+/* ---------- main render ---------- */
+function render(t) {
+  /* Scene 1 */
+  const o1 = sceneOp(t, 0, 4);
+  setOp(s1, o1);
+  place(s1rev, lerp(300, 470, easeOut(prog(t, 0.1, 1.1))), 400, 1.8);
+  const bugOn = prog(t, 1.4, 1.9);
+  s1bugBox.setAttribute("opacity", bugOn);
+  place(s1think, 250, 240, pop(prog(t, 1.9, 2.5)) * (t > 1.9 ? 1 : 0));
+  s1think.setAttribute("opacity", prog(t, 1.9, 2.2));
+  s1q.forEach((q, i) => {
+    const a = 2.6 + i * 0.25;
+    const x = [1370, 1250, 1390][i], y = [200, 120, 560][i];
+    place(q, x, y + Math.sin(t * 4 + i) * 6, pop(prog(t, a, a + 0.5)) * (t > a ? 1 : 0));
+    q.setAttribute("opacity", prog(t, a, a + 0.2));
+  });
+
+  /* Grid scenes 2-3 */
+  const og = sceneOp(t, 4, 11);
+  setOp(gridLayer, og);
+  revs.forEach((r) => {
+    const a = 4.2 + r.i * 0.1;
+    const k = prog(t, a, a + 0.5);
+    place(r.g, r.x, r.y + (1 - easeOut(k)) * 40, (k > 0 ? 0.6 + 0.4 * pop(k) : 0.001) * 1.15);
+    r.g.setAttribute("opacity", k);
+  });
+  // finding bubbles fly to pool
+  let delivered = 0;
+  bubbles.forEach((b, i) => {
+    const a = 8.2 + i * 0.12;
+    const k = prog(t, a, a + 0.7);
+    const r = revs[i];
+    b.setAttribute("cx", lerp(r.x, POOL.x, ease(k)) + Math.sin(k * Math.PI) * (r.x < POOL.x ? -30 : 30));
+    b.setAttribute("cy", lerp(r.y - 20, POOL.y, ease(k)));
+    b.setAttribute("opacity", k > 0 && k < 1 ? 1 : 0);
+    if (k >= 1) delivered++;
+  });
+  const showPool = prog(t, 8.0, 8.4);
+  poolG.setAttribute("opacity", showPool);
+  poolText.textContent = "Pool of findings: " + (delivered * 3 + (t > 8.2 ? 0 : 0));
+
+  /* Scene 4 */
+  setOp(s4, sceneOp(t, 11, 18));
+  place(findCard, 800, 70 + (1 - easeOut(prog(t, 11.1, 11.8))) * -60, 1);
+  findCard.setAttribute("opacity", prog(t, 11.1, 11.6));
+  const cx = [330, 1270], cy = 500;
+  place(pros, cx[0], cy, pop(prog(t, 11.4, 12.1)) * (t > 11.4 ? 1 : 0));
+  place(defn, cx[1], cy, pop(prog(t, 11.6, 12.3)) * (t > 11.6 ? 1 : 0));
+  place(judg, 800, 560, pop(prog(t, 11.8, 12.5)) * (t > 11.8 ? 1 : 0));
+  place(labelPros, cx[0], cy + 120); place(labelDef, cx[1], cy + 120); place(labelJudge, 800, 680);
+  [labelPros, labelDef, labelJudge].forEach((l) => l.setAttribute("opacity", prog(t, 12, 12.6)));
+  place(bubPros, 330, 330, pop(prog(t, 12.9, 13.5)) * (t > 12.9 && t < 15.9 ? 1 : 0));
+  place(bubDef, 1270, 330, pop(prog(t, 14.3, 14.9)) * (t > 14.3 && t < 15.9 ? 1 : 0));
+  const codeIn = prog(t, 16.0, 16.5);
+  place(codeP, 800, 330, 0.9 + 0.1 * easeOut(codeIn));
+  codeP.setAttribute("opacity", codeIn);
+  codeHi.setAttribute("opacity", prog(t, 16.4, 16.8));
+  stamps.forEach((s, i) => {
+    const k = prog(t, 17.0 + i * 0.1, 17.4 + i * 0.1);
+    const winner = i === 0;
+    const win = prog(t, 17.4, 17.7);
+    const scale = winner ? (1 + 0.12 * Math.sin(win * Math.PI)) : 1;
+    place(s.g, s.x, 755 - 15 * (1 - k), scale);
+    s.g.setAttribute("opacity", k * (winner ? lerp(0.55, 1, win) : 0.28));
+  });
+
+  /* Scene 5 */
+  setOp(s5, sceneOp(t, 18, 23));
+  const rowStart = [18.3, 19.2, 20.4, 21.5, 22.2];
+  dots.forEach((arr, r) => {
+    arr.forEach((d, k) => {
+      const appear = prog(t, rowStart[r] + k * 0.02, rowStart[r] + 0.35 + k * 0.02);
+      const nextStart = r < 4 ? rowStart[r + 1] + 0.1 : 99;
+      const survivor = (k % 2 === 0);
+      const out = r < 4 && !survivor ? prog(t, nextStart, nextStart + 0.4) : 0;
+      place(d.g, d.x, d.y, (0.3 + 0.7 * pop(appear)) * (1 - 0.25 * out) * (appear > 0 ? 1 : 0.0001));
+      d.g.setAttribute("opacity", appear * (1 - 0.65 * out));
+      if (out > 0) d.circ.setAttribute("fill", "#4a5360");
+    });
+  });
+  lostChips.forEach((c, i) => {
+    const r = i < 4 ? 0 : (i < 6 ? 1 : 2);
+    const src = dots[r][(i < 4 ? i * 4 + 1 : (i < 6 ? (i - 4) * 4 + 3 : 1)) % dots[r].length];
+    const a = rowStart[r + 1] + 0.2 + (i % 4) * 0.12;
+    const k = prog(t, a, a + 0.8);
+    c.setAttribute("cx", lerp(src.x, 1380, ease(k)));
+    c.setAttribute("cy", lerp(src.y, 420, ease(k)) - Math.sin(k * Math.PI) * 40);
+    c.setAttribute("opacity", k > 0 && k < 1 ? 1 : 0);
+  });
+  keepBox.setAttribute("opacity", prog(t, 19.0, 19.5));
+  crown.setAttribute("opacity", prog(t, 22.3, 22.7));
+  place(crown, 800, 585 - 6 * Math.sin(Math.max(0, t - 22.5) * 4));
+  champLabel.setAttribute("opacity", prog(t, 22.4, 22.8));
+
+  /* Scene 6 */
+  setOp(s6, sceneOp(t, 23, 28));
+  reportRows.forEach((g, i) => {
+    const k = prog(t, 23.7 + i * 0.35, 24.2 + i * 0.35);
+    g.setAttribute("opacity", k);
+    g.setAttribute("transform", `translate(${(1 - easeOut(k)) * 40} 0)`);
+  });
+
+  /* Scene 7 */
+  setOp(s7, sceneOp(t, 28, 32.01, 0.5) * 1);
+  s7.style.display = t < 27.9 ? "none" : "";
+  if (t >= 27.9 && t < 28) setOp(s7, prog(t, 27.9, 28.4));
+  if (t >= 28) setOp(s7, Math.min(prog(t, 28, 28.5), 1));
+
+  /* Caption */
+  const capEl = document.getElementById("caption");
+  let capText = "", capOp = 0;
+  for (const [a, b, s] of CAPTIONS) {
+    if (t >= a && t < b) { capText = s; capOp = Math.min(prog(t, a, a + 0.3), 1 - prog(t, b - 0.3, b)); }
+  }
+  if (capEl.dataset.t !== capText) { capEl.dataset.t = capText; capEl.innerHTML = capText.split("\n").map((l) => `<div>${l}</div>`).join(""); }
+  capEl.style.opacity = capOp.toFixed(3);
+}
+
+/* ---------- layout for different outputs ---------- */
+function layout() {
+  const W = window.innerWidth, H = window.innerHeight;
+  const header = document.getElementById("header");
+  const cap = document.getElementById("caption");
+  const tall = H > W * 0.7;
+  if (tall) {
+    const sceneH = W * 820 / 1600;
+    const top = H > W * 1.2 ? H * 0.22 : H * 0.17;
+    svg.style.left = "0px"; svg.style.top = top + "px";
+    svg.style.width = W + "px"; svg.style.height = sceneH + "px";
+    header.style.top = (top - W * 0.14) + "px";
+    header.style.fontSize = (W * 0.034) + "px";
+    header.style.display = "";
+    const ft = document.getElementById("footer"); ft.style.display = "block"; ft.style.fontSize = (W * 0.034) + "px"; ft.style.top = (H - W * 0.12) + "px";
+    cap.style.top = (top + sceneH + W * 0.04) + "px";
+    cap.style.fontSize = (W * 0.05) + "px";
+  } else {
+    const sceneH = H * 0.84, sceneW = sceneH * 1600 / 820;
+    svg.style.left = ((W - sceneW) / 2) + "px"; svg.style.top = "0px";
+    svg.style.width = sceneW + "px"; svg.style.height = sceneH + "px";
+    header.style.display = "none"; document.getElementById("footer").style.display = "none";
+    cap.style.top = (sceneH + H * 0.012) + "px";
+    cap.style.fontSize = (H * 0.04) + "px";
+  }
+}
+window.addEventListener("resize", layout);
+layout();
+window.setT = (t) => render(t);
+window.DURATION = DURATION;
+render(0);
+if (new URLSearchParams(location.search).get("play") === "1") {
+  const t0 = performance.now();
+  (function loop() { const t = ((performance.now() - t0) / 1000) % DURATION; render(t); requestAnimationFrame(loop); })();
+}
+</script>
+</body>
+</html>
