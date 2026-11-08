@@ -45,7 +45,7 @@ By default this installs to `~/.agents/skills` (Codex and most tools). Options:
 | `--force`, `-Force` | Replace skills that are already installed |
 | `--dry-run`, `-DryRun` | Show what would happen, copy nothing |
 
-The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). The Windows script has not been tested on many machines yet, so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
+The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). The Windows script has not been tested on Windows yet (the macOS and Linux script has), so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
 
 Then restart your assistant and go to step 4 below.
 
