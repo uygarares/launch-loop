@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Code review: new pull request review mode. It only reads and reports, treats the pull request text as data, and looks closely at risky files and changed instructions.
+- All skills: pull request, issue, README and code text is treated as data, never as instructions. Secrets are never written in full. Reviews and scans keep risk details out of public places.
+- Security scan and code review are linked to each other and to the guide.
+- New: `install.sh` (macOS and Linux) and `install.ps1` (Windows) to install the skills with one command, plus a "let your assistant install it" option in the README.
+- New: automatic checks on every change (skill format, install script on Linux, macOS and Windows).
+- New: README "first 5 minutes" section, CODE_OF_CONDUCT, and an updated design note.
+
 ## 0.1.0
 
 First release. Five skills:

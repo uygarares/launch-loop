@@ -10,10 +10,11 @@ permissions:
 
 jobs:
   check:
+    name: Check skills and test install (Linux)
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Check the skill files
         run: python3 scripts/check_skills.py
@@ -26,3 +27,39 @@ jobs:
           ./install.sh
           test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls skills | wc -l)"
           ./install.sh | grep -q "0 installed"
+
+  install-macos:
+    name: Test install (macOS)
+    runs-on: macos-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Test the install script
+        run: |
+          export HOME="$(mktemp -d)"
+          ./install.sh --dry-run
+          test ! -e "$HOME/.agents" || { echo "dry run must not copy anything"; exit 1; }
+          ./install.sh
+          test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls skills | wc -l)"
+          ./install.sh | grep -q "0 installed"
+
+  install-windows:
+    name: Test install (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Test the install script
+        shell: pwsh
+        run: |
+          $target = Join-Path ([Environment]::GetFolderPath('UserProfile')) '.agents\skills'
+          ./install.ps1 -DryRun
+          if (Test-Path $target) { throw 'dry run must not copy anything' }
+          ./install.ps1
+          $expected = (Get-ChildItem skills -Directory).Count
+          $actual = (Get-ChildItem $target -Directory).Count
+          if ($actual -ne $expected) { throw "expected $expected skills, found $actual" }
+          $out = (./install.ps1 *>&1) | Out-String
+          if ($out -notmatch '0 installed') { throw "second run should skip everything. Output: $out" }

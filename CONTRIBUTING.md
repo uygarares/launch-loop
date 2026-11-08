@@ -18,6 +18,10 @@ Thank you for helping. Launch Loop is a set of skills (instructions written in p
 5. Skills must never push, post, close, or delete anything without the user's approval. Please do not weaken these rules.
 6. Never include real secrets, private project details, or screenshots of private code in examples.
 
+## Behavior
+
+Please be kind and patient. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
 ## Security problems
 
 Do not open a public issue for a security problem. See [SECURITY.md](SECURITY.md).
