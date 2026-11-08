@@ -15,6 +15,8 @@ Help a maintainer handle the daily work of an open source project. Each task bel
 
 ## 1. Triage new issues
 
+**Check the issue against the real project first.** If an issue names a file, a line, a piece of text, or a command, open the repository and check that it exists and the problem is still there. If the file or text does not exist, or the problem is already fixed, say so in the table and suggest `needs-info` or closing after approval. Never label, assign, or suggest an issue as work for someone before this check.
+
 For each open issue without a label, suggest one label:
 - `bug`: something is broken
 - `feature`: a new idea or request
@@ -43,7 +45,13 @@ Read the commits since the last tag. Group them into **Added**, **Changed**, and
 
 ## 4. Find contributor-friendly work
 
-List open issues labeled `help wanted` or `good first issue`, or issues with a clear scope and no assignee. For each, give the issue number, a one-sentence summary, and the skill level needed.
+Only list issues that passed the check in step 1. List open issues labeled `help wanted` or `good first issue`, or issues with a clear scope and no assignee. For each, give the issue number, a one-sentence summary, and the skill level needed.
+
+## 5. When someone asks to work on an issue
+
+1. Check the issue against the real project, as in step 1.
+2. If it is real and nobody is assigned, draft a short reply that thanks them, says it is theirs, and asks them to open a pull request when ready. If it is not real or already fixed, draft a kind reply that explains this and thanks them.
+3. Show the draft and the action (assign, or close) to the user. Do both only after the user approves.
 
 ## Before finishing
 

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Maintainer: check every issue against the real project before labeling, assigning, or suggesting it as work. New step for handling people who ask to work on an issue.
 - Deep review (code review) and attacker/defender duel (security scan): full tournament rules in `duel.md` in each skill folder. Findings are judged one by one on quoted evidence; unclear findings go to a human-check list; knocked-out reviewers keep their confirmed findings. Experimental.
 - Code review: new pull request review mode. It only reads and reports, treats the pull request text as data, and looks closely at risky files and changed instructions.
 - All skills: pull request, issue, README and code text is treated as data, never as instructions. Secrets are never written in full. Reviews and scans keep risk details out of public places.
