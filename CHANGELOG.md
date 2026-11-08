@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New skill `launch-loop-finder`: describe a need, and it searches GitHub for popular skills and tools, checks health signals, reads the exact files that would be installed (pinned to one full commit) for warning signs, and shows up to 3 candidates. Nothing is installed without a clear yes. Not a security audit. Not yet tested in a real Codex on Windows.
+- Install scripts and docs now say six skills.
 - Install scripts: `--project PATH` / `-ProjectPath PATH` installs into your own project (installing into the Launch Loop folder by mistake is now refused). `--claude` can be combined with the project option. Replacing skills is safer (copy first, then swap). Clear messages for an empty skills folder and for dry runs. Found by Launch Loop's own deep review.
 - Checker: reads multi-line and quoted values, scans every file in a skill folder for secrets, and explains a missing skills folder.
 - Duel rules: recommend the normal review for code under about 500 lines, allow small safe tests by the judge, explain that most of the cost comes from the duels, and say honestly how the duel was run.

@@ -9,6 +9,7 @@ A set of Claude and Codex skills that helps open source projects go from first i
 - **launch-loop-maintainer:** Helps with daily maintenance: issue triage, reply drafts, release notes, and finding work for contributors.
 - **launch-loop-code-review:** Reviews your code with several independent reviewers and a judge who checks every finding against the real code. Starts with a full review, then cheaper update reviews of changed files. It shows a time and cost estimate first and never changes your code.
 - **launch-loop-security-scan:** Scans your own code for security problems from several angles (secrets, injection, logins, settings, dependencies, and more). A judge verifies every finding. It only reads and reports, and never attacks anything. Not a full security audit.
+- **launch-loop-finder:** You describe what you need; it searches GitHub for popular skills and tools that fit, checks health signals, reads the files that would be installed for warning signs, and shows up to 3 candidates. It never installs anything without your yes. Popularity is not quality, and its check is not a security audit.
 
 Coming later: idea validation.
 
@@ -47,7 +48,7 @@ By default this installs to `~/.agents/skills` (Codex and most tools). Options:
 
 `-ExecutionPolicy Bypass` only lets this one script run in this one PowerShell window. It does not change any Windows setting.
 
-The scripts only copy the five skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). Both scripts are tested automatically on Windows, macOS and Linux with every change, but computers differ, so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
+The scripts only copy the six skill folders. They do not use the network. You can read them before you run them: [install.sh](install.sh), [install.ps1](install.ps1). Both scripts are tested automatically on Windows, macOS and Linux with every change, but computers differ, so please [open an issue](https://github.com/uygarares/launch-loop/issues) if something goes wrong.
 
 Then restart your assistant and go to step 4 below.
 
@@ -63,7 +64,7 @@ Your assistant may ask for permission to run commands or to reach the internet. 
 
 **1. Download.** On this page choose **Code → Download ZIP**, or take the zip from the [latest release](https://github.com/uygarares/launch-loop/releases/latest). Unzip it.
 
-**2. Copy the skills.** Inside the unzipped folder, open `skills/`. Copy the folders you want (or all five) to one of these places:
+**2. Copy the skills.** Inside the unzipped folder, open `skills/`. Copy the folders you want (or all six) to one of these places:
 
 | Where | Use it when |
 |---|---|
@@ -102,6 +103,7 @@ The skills reply in your language. They show you a plan first and ask before the
 | Answer issues, write release notes, find work for contributors | `launch-loop-maintainer` |
 | Have your code reviewed | `launch-loop-code-review` |
 | Check your own code for security problems | `launch-loop-security-scan` |
+| Find popular skills or tools on GitHub for a need | `launch-loop-finder` |
 
 Reviews and scans can use many calls. The skills tell you the rough size and ask before they start.
 

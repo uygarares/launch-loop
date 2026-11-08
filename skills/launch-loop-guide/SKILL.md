@@ -24,6 +24,7 @@ Ask a follow-up only if the answer is unclear.
 - **A repository with code, and issues or pull requests coming in:** use `launch-loop-maintainer`.
 - **The user wants their code checked** (for bugs, mistakes, or risky parts), or has just written a lot of code and wants a second look: use `launch-loop-code-review`. This works for public and private repositories alike. If the repository has code but the user did not say what they need, offer both: "Do you want help with incoming issues, or a review of your code?"
 - **The user wants their code checked for security problems** (leaked keys, unsafe input, risky settings) before sharing it: use `launch-loop-security-scan`. It only reads and reports and does not replace a security professional.
+- **The user describes a need and wants existing skills or tools for it** (for example "better UI design" or "shorter answers"): use `launch-loop-finder`. It only searches, reads and reports, and installs nothing without a clear yes.
 - **Not sure what the project needs:** ask what they built and who it is for, then choose.
 
 ## Rules
