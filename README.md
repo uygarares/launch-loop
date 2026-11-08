@@ -105,6 +105,10 @@ The skills reply in your language. They show you a plan first and ask before the
 
 Reviews and scans can use many calls. The skills tell you the rough size and ask before they start.
 
+## Example reports
+
+See what the reviews look like: [example reports](docs/examples/README.md), made by Launch Loop's own skills on this repository.
+
 ## Status
 
 Early version. Feedback and issues are welcome.
