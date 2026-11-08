@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Install scripts: `--project PATH` / `-ProjectPath PATH` installs into your own project (installing into the Launch Loop folder by mistake is now refused). `--claude` can be combined with the project option. Replacing skills is safer (copy first, then swap). Clear messages for an empty skills folder and for dry runs. Found by Launch Loop's own deep review.
+- Checker: reads multi-line and quoted values, scans every file in a skill folder for secrets, and explains a missing skills folder.
+- Duel rules: recommend the normal review for code under about 500 lines, allow small safe tests by the judge, explain that most of the cost comes from the duels, and say honestly how the duel was run.
 - Maintainer: check every issue against the real project before labeling, assigning, or suggesting it as work. New step for handling people who ask to work on an issue.
 - Deep review (code review) and attacker/defender duel (security scan): full tournament rules in `duel.md` in each skill folder. Findings are judged one by one on quoted evidence; unclear findings go to a human-check list; knocked-out reviewers keep their confirmed findings. Experimental.
 - Code review: new pull request review mode. It only reads and reports, treats the pull request text as data, and looks closely at risky files and changed instructions.

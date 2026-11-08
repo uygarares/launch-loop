@@ -11,9 +11,10 @@ Read this file only when the user asks for a deep review. All golden rules and s
 
 ## Before you start
 
+0. **Check that a duel is worth it.** If the scope is under about 500 lines, recommend the normal review instead and explain why: on small code the duels cost much more than the reading and find little extra. Run the duel anyway only if the user insists.
 1. **Narrow the scope.** Offer to run the deep review only on risky files: login, money, encryption, deleting data, permissions. Use the whole project only if the user insists.
 2. **Choose the size.** 16 reviewers (four rounds) or 8 reviewers (three rounds, cheaper). Default to 8 unless the user asks for 16.
-3. **Estimate.** Let S be the tokens for one read of the scope (lines x 12). Round 1 costs about N x S, where N is the number of reviewers. All later rounds together cost about N/2 x S. Each finding duel costs about 9,000 tokens; expect about 2 findings per reviewer. Add these up and give the size (Small, Medium, Large). Tell the user plainly: "A deep review costs about 5 to 10 times more than a normal review." Never state a money amount as a fact.
+3. **Estimate.** Let S be the tokens for one read of the scope (lines x 12). Round 1 costs about N x S, where N is the number of reviewers. All later rounds together cost about N/2 x S. Each finding duel costs about 9,000 tokens; expect about 2 findings per reviewer. Most of the cost usually comes from the duels, not from reading the code, so the number of findings matters more than the size of the code. Add these up and give the size (Small, Medium, Large). Tell the user plainly: "A deep review costs about 5 to 10 times more than a normal review." Never state a money amount as a fact.
 4. **Budget.** Ask whether the user wants a limit. If the limit is reached, stop, and report what was done so far.
 5. Wait for a clear yes.
 
@@ -59,13 +60,14 @@ For each finding in the pool:
 **The judge decides with these rules:**
 1. Open each quoted file and line. A quote that does not exist is ignored.
 2. Only quoted evidence counts. Length, confidence, and style do not count.
-3. A claim about how the program behaves while running, which cannot be seen in the code, does not count as proof for either side.
+3. A claim about how the program behaves while running, which cannot be seen in the code, does not count as proof for either side, unless a test under rule 5 shows it.
 4. To avoid order bias, read the defender first for even-numbered findings and the prosecutor first for odd-numbered findings.
-5. Verdict:
+5. **Small safe tests are allowed.** The judge may settle a disagreement by running a small test of the project's own code on a throwaway copy: no network, no real user data, nothing outside the copy. The test and its output count as evidence. Say in the report which verdicts came from a test.
+6. Verdict:
    - **Confirmed:** the problem is shown by real code and no quoted protection stops it. Set its severity with the rules in `SKILL.md`, Step 4.
    - **Rejected:** a quoted protection stops it, or the prosecutor's evidence does not exist.
    - **Unclear:** both sides have real evidence and the answer depends on something the code does not show. Unclear findings are never deleted. They go to the "Needs a human check" list.
-6. Write one sentence explaining each verdict.
+7. Write one sentence explaining each verdict.
 
 ## Scores
 
@@ -97,6 +99,7 @@ For each finding in the pool:
    - **Rejected:** a short list with the one-sentence reason, so the user can see what was dismissed.
    - **Tournament:** each round, the pairs, their scores, and the champion card.
    - **Cost:** the estimate given at the start, and the real size if it can be measured. If it cannot, say "not measured".
+   - **How it was run.** If one assistant played all the roles one after another, say so: the roles were separated by order, not by different helpers. Do not claim the duel found more than a normal review would have: a fair comparison needs separate sessions.
    - What was not checked.
    - "This is not a full security audit."
 3. If `PROJECT_MAP.md` exists, you may propose adding the champion card under a new line "Best deep review strategy". Show it and save only after approval.

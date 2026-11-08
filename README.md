@@ -40,8 +40,8 @@ By default this installs to `~/.agents/skills` (Codex and most tools). Options:
 
 | Option (macOS/Linux, Windows) | What it does |
 |---|---|
-| `--claude`, `-Claude` | Install for Claude Code (`~/.claude/skills`) |
-| `--project`, `-Project` | Install into the current folder only |
+| `--claude`, `-Claude` | Install for Claude Code (`.claude/skills`). Works alone or together with the project option |
+| `--project PATH`, `-ProjectPath PATH` | Install into your project at PATH only, for example `./install.sh --project ~/code/my-app` |
 | `--force`, `-Force` | Replace skills that are already installed |
 | `--dry-run`, `-DryRun` | Show what would happen, copy nothing |
 

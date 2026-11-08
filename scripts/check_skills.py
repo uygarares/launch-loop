@@ -32,14 +32,32 @@ def parse_frontmatter(text):
     block = text[4:end]
     body = text[end + 5:]
     data = {}
-    for line in block.splitlines():
-        if ":" in line and not line.startswith(" "):
-            key, value = line.split(":", 1)
-            data[key.strip()] = value.strip()
+    lines = block.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        i += 1
+        if ":" not in line or line.startswith((" ", "\t")):
+            continue
+        key, value = line.split(":", 1)
+        value = value.strip()
+        if value in (">", "|", ">-", "|-", ">+", "|+"):
+            # A value written over several indented lines.
+            parts = []
+            while i < len(lines) and (lines[i].startswith((" ", "\t")) or not lines[i].strip()):
+                parts.append(lines[i].strip())
+                i += 1
+            value = " ".join(p for p in parts if p)
+        elif len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        data[key.strip()] = value
     return data, body
 
 
 def main():
+    if not SKILLS.is_dir():
+        print(f"Cannot find the skills folder: {SKILLS}")
+        return 1
     dirs = sorted(p for p in SKILLS.iterdir() if p.is_dir())
     if not dirs:
         print("No skills found in skills/")
@@ -89,8 +107,14 @@ def main():
         if line_count > MAX_LINES:
             fail(label, f"{line_count} lines (keep skills under {MAX_LINES})")
 
-        if SECRET_RE.search(text):
-            fail(label, "looks like it contains a secret (key, token or private key)")
+        for extra in sorted(folder.rglob("*")):
+            if extra.is_file():
+                try:
+                    content = extra.read_text(encoding="utf-8")
+                except (UnicodeDecodeError, OSError):
+                    continue
+                if SECRET_RE.search(content):
+                    fail(label, f"{extra.relative_to(folder)} looks like it contains a secret (key, token or private key)")
 
         print(f"checked {label}: {line_count} lines, description {len(description)} characters")
 

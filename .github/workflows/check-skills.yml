@@ -27,6 +27,13 @@ jobs:
           ./install.sh
           test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls skills | wc -l)"
           ./install.sh | grep -q "0 installed"
+          project="$(mktemp -d)"
+          ./install.sh --project "$project" --claude
+          test "$(ls "$project/.claude/skills" | wc -l)" -eq "$(ls skills | wc -l)"
+          if ./install.sh --project . 2>/dev/null; then echo "installing into the Launch Loop folder must fail"; exit 1; fi
+          if ./install.sh --project 2>/dev/null; then echo "--project without a path must fail"; exit 1; fi
+          ./install.sh --force > /dev/null
+          test -z "$(ls -A "$HOME/.agents/skills" | grep installing || true)"
 
   install-macos:
     name: Test install (macOS)
@@ -43,6 +50,13 @@ jobs:
           ./install.sh
           test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls skills | wc -l)"
           ./install.sh | grep -q "0 installed"
+          project="$(mktemp -d)"
+          ./install.sh --project "$project" --claude
+          test "$(ls "$project/.claude/skills" | wc -l)" -eq "$(ls skills | wc -l)"
+          if ./install.sh --project . 2>/dev/null; then echo "installing into the Launch Loop folder must fail"; exit 1; fi
+          if ./install.sh --project 2>/dev/null; then echo "--project without a path must fail"; exit 1; fi
+          ./install.sh --force > /dev/null
+          test -z "$(ls -A "$HOME/.agents/skills" | grep installing || true)"
 
   install-windows:
     name: Test install (Windows)
@@ -63,3 +77,16 @@ jobs:
           if ($actual -ne $expected) { throw "expected $expected skills, found $actual" }
           $out = (./install.ps1 *>&1) | Out-String
           if ($out -notmatch '0 installed') { throw "second run should skip everything. Output: $out" }
+          $project = Join-Path $env:RUNNER_TEMP 'my-app'
+          New-Item -ItemType Directory -Force -Path $project | Out-Null
+          ./install.ps1 -ProjectPath $project -Claude
+          $actual = (Get-ChildItem (Join-Path $project '.claude\skills') -Directory).Count
+          if ($actual -ne $expected) { throw "project install: expected $expected skills, found $actual" }
+          $failed = $false
+          try { ./install.ps1 -ProjectPath . } catch { $failed = $true }
+          if (-not $failed) { throw 'installing into the Launch Loop folder must fail' }
+          ./install.ps1 -Force
+          $left = @(Get-ChildItem -Force $target | Where-Object { $_.Name -like '*.installing' })
+          if ($left.Count -ne 0) { throw 'temporary folders were left behind' }
+          $dry = (./install.ps1 -DryRun -Force *>&1) | Out-String
+          if ($dry -notmatch 'would be installed') { throw "dry run message is wrong: $dry" }

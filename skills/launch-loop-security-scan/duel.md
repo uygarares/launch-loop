@@ -11,9 +11,10 @@ Read this file only when the user asks for a duel. All golden rules and safety r
 
 ## Before you start
 
+0. **Check that a duel is worth it.** If the scope is under about 500 lines, recommend the normal scan instead and explain why: on small code the duels cost much more than the reading and find little extra. Run the duel anyway only if the user insists.
 1. **Narrow the scope** to risky code: login, sessions, money, encryption, file handling, anything that takes input from outside, automation files. Use the whole project only if the user insists.
 2. **Choose the size.** 16 reviewers (four rounds) or 8 reviewers (three rounds). Default to 8 unless the user asks for 16.
-3. **Estimate.** Let S be the tokens for one read of the scope (lines x 12). Round 1 costs about N x S, where N is the number of reviewers. All later rounds together cost about N/2 x S. Each finding duel costs about 9,000 tokens; expect about 2 findings per reviewer. Give the size (Small, Medium, Large) and say plainly: "A duel costs about 5 to 10 times more than a normal scan." Never state a money amount as a fact.
+3. **Estimate.** Let S be the tokens for one read of the scope (lines x 12). Round 1 costs about N x S, where N is the number of reviewers. All later rounds together cost about N/2 x S. Each finding duel costs about 9,000 tokens; expect about 2 findings per reviewer. Most of the cost usually comes from the duels, not from reading the code, so the number of findings matters more than the size of the code. Give the size (Small, Medium, Large) and say plainly: "A duel costs about 5 to 10 times more than a normal scan." Never state a money amount as a fact.
 4. **Budget.** Ask whether the user wants a limit. If it is reached, stop and report what was done so far.
 5. Wait for a clear yes.
 
@@ -64,11 +65,12 @@ For each finding:
 1. Open each quoted file and line. A quote that does not exist is ignored.
 2. Only quoted evidence counts. Length, confidence, and style do not count.
 3. Read the defender first for even-numbered findings and the attacker first for odd-numbered ones.
-4. Verdict:
+4. **Small safe checks are allowed, attacks are not.** The judge may run the project's own tests, or the project's code with normal input, on a throwaway copy with no network and no real data, to check a defender's claim. The judge never runs attack input, never tries to break anything, and never contacts a live system. Say in the report which verdicts came from a check.
+5. Verdict:
    - **Confirmed:** all three links of the chain are backed by real code, and no quoted protection breaks the chain. Set the severity with the rules in `SKILL.md`, Step 4.
    - **Rejected:** a quoted protection breaks the chain, or the attacker's evidence does not exist.
    - **Unclear:** a link depends on something the code does not show (for example server settings or how the app is deployed). Unclear findings are never deleted. They go to the "Needs a human check" list.
-5. Write one sentence explaining each verdict.
+6. Write one sentence explaining each verdict.
 
 ## Scores
 
@@ -99,5 +101,6 @@ For each finding:
    - **Rejected:** a short list with the one-sentence reason.
    - **Tournament:** rounds, pairs, scores, and the champion card.
    - **Cost:** the estimate and, if it can be measured, the real size. Otherwise "not measured".
+   - **How it was run.** If one assistant played all the roles one after another, say so: the roles were separated by order, not by different helpers. Do not claim the duel found more than a normal scan would have: a fair comparison needs separate sessions.
    - What was not checked.
    - "This is not a full security audit. It was done by reading code, not by testing a running system. For a serious product, ask a security professional."
