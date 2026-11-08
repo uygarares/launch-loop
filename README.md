@@ -49,6 +49,14 @@ The scripts only copy the five skill folders. They do not use the network. You c
 
 Then restart your assistant and go to step 4 below.
 
+### Or let your assistant install it
+
+If your assistant can run commands (Codex, Claude Code), you can ask it to do the work. Copy this message:
+
+> Install Launch Loop from https://github.com/uygarares/launch-loop for me. Clone it, run `install.sh` first with `--dry-run` (on Windows run `install.ps1 -DryRun`), show me what it would do, and wait for my yes before the real install.
+
+Your assistant may ask for permission to run commands or to reach the internet. Check that the address is exactly the one above before you say yes. This way of installing is new and has not been tested with every assistant yet. If it does not work, use one of the other ways.
+
 ### Or copy by hand
 
 **1. Download.** On this page choose **Code → Download ZIP**, or take the zip from the [latest release](https://github.com/uygarares/launch-loop/releases/latest). Unzip it.
