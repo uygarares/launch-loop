@@ -12,9 +12,53 @@ A set of Claude and Codex skills that helps open source projects go from first i
 
 Coming later: idea validation.
 
-## How to use
+## Your first 5 minutes
 
-Copy the folders inside `skills/` into `.agents/skills/` in your project (for Codex and most tools), or into `~/.agents/skills/` for personal use. Then ask for help in plain language, for example: "I want to start an open source project, where do I begin?"
+You do not need to be technical. You only copy folders and then talk to your assistant.
+
+**1. Download.** On this page choose **Code → Download ZIP**, or take the zip from the [latest release](https://github.com/uygarares/launch-loop/releases/latest). Unzip it.
+
+**2. Copy the skills.** Inside the unzipped folder, open `skills/`. Copy the folders you want (or all five) to one of these places:
+
+| Where | Use it when |
+|---|---|
+| `.agents/skills/` inside your project | Codex and most tools, for one project |
+| `~/.agents/skills/` in your home folder | Codex and most tools, for all your projects |
+| `.claude/skills/` or `~/.claude/skills/` | Claude Code |
+
+Keep each skill in its own folder. Do not rename the folders.
+
+**3. Restart your assistant** (open a new chat or session) so it finds the new skills.
+
+**4. Ask in plain words.** For example:
+
+> I want to start an open source project. Where do I begin?
+
+If the assistant does not seem to know Launch Loop, ask: "Which Launch Loop skills do you have?" It should list them.
+
+### What a conversation looks like
+
+> **You:** I want to start an open source project. Where do I begin?
+>
+> **Assistant:** Do you have a repository on GitHub yet?
+>
+> **You:** Yes, but it is empty.
+>
+> **Assistant:** Then I will use the setup skill. First, four short questions: what does your project do, who is it for, is it only for you or for other people, and how will people install it?
+
+The skills reply in your language. They show you a plan first and ask before they change, post, or push anything.
+
+### Which skill for what
+
+| You want to... | Skill |
+|---|---|
+| Know where to start | `launch-loop-guide` |
+| Create README, LICENSE, CONTRIBUTING, issue templates | `launch-loop-setup` |
+| Answer issues, write release notes, find work for contributors | `launch-loop-maintainer` |
+| Have your code reviewed | `launch-loop-code-review` |
+| Check your own code for security problems | `launch-loop-security-scan` |
+
+Reviews and scans can use many calls. The skills tell you the rough size and ask before they start.
 
 ## Status
 
